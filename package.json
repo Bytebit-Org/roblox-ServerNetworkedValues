@@ -1,7 +1,7 @@
 {
   "name": "@rbxts/server-networked-values",
   "version": "0.0.1",
-  "description": "A Roblox-TS library for networking values from the server to the client",
+  "description": "A Roblox-TS library for networking persistent values from the server to the client",
   "main": "out/init.lua",
   "scripts": {
     "prepublishOnly": "rbxtsc"
