@@ -18,7 +18,7 @@ function assertValueObjectInstanceType<T extends ValueObjectClassName>(
 	className: T,
 ): asserts valueObjectInstance is Instances[T] {
 	assert(
-		!valueObjectInstance.IsA(className),
+		valueObjectInstance.IsA(className),
 		`Expected networked value instance to be of type ${className}, got ${valueObjectInstance.ClassName}`,
 	);
 }
