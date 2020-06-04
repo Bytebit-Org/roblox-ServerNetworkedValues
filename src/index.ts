@@ -2,7 +2,7 @@
 export * from "./client/classes/ClientNetworkedValuesReader";
 
 // Server-side interfaces
-export * from "./server/interfaces/INetworkedValue";
+export { INetworkedValue } from "./server/interfaces/INetworkedValue";
 
 // Server-side networked value classes
 export * from "./server/classes/NetworkedBooleanValue";
