@@ -17,7 +17,7 @@ export function getOrCreateValueObjectInstance<T extends ValueObjectClassName>(
 	parentInstance: Instance,
 ): ValueObjectInstance<ValueObjectClassNameToValueType<T>> {
 	const existingChildWithName = parentInstance.FindFirstChild(name);
-	if (existingChildWithName) {
+	if (existingChildWithName !== undefined) {
 		if (createOnly) {
 			throw `Cannot create a new value object with name ${name} under ${parentInstance.GetFullName()} as a child with the same name already exists`;
 		}

@@ -24,7 +24,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 		parentInstance: Instance,
 		tCheck: check<T>,
 	): INetworkedValue<T> {
-		const serializedInitialValue = HttpService.JSONEncode(initialValue);
+		const serializedInitialValue = initialValue !== undefined ? HttpService.JSONEncode(initialValue) : "";
 		const networkedStringValue = NetworkedStringValue.create(serializedInitialValue, name, parentInstance);
 		return new NetworkedJsonValue(
 			() => new Signal<(newValue: T) => void>(),
@@ -41,7 +41,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 		parentInstance: Instance,
 		tCheck: check<T>,
 	): INetworkedValue<T> {
-		const serializedInitialValue = HttpService.JSONEncode(initialValue);
+		const serializedInitialValue = initialValue !== undefined ? HttpService.JSONEncode(initialValue) : "";
 		const networkedStringValue = NetworkedStringValue.getOrCreate(serializedInitialValue, name, parentInstance);
 		return new NetworkedJsonValue(
 			() => new Signal<(newValue: T) => void>(),
