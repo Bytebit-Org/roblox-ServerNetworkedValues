@@ -80,7 +80,7 @@ export class ClientNetworkedValuesReader {
 		assertValueObjectInstanceType(valueObjectInstance, "StringValue");
 
 		const serializedValue = valueObjectInstance.Value;
-		const deserializedValue = this.httpService.JSONDecode(serializedValue);
+		const deserializedValue = serializedValue === "" ? undefined : this.httpService.JSONDecode(serializedValue);
 		assertValuePassesCheck(deserializedValue, tCheck);
 
 		return deserializedValue;
@@ -181,7 +181,7 @@ export class ClientNetworkedValuesReader {
 		assertValueObjectInstanceType(valueObjectInstance, "StringValue");
 
 		const deserializeAndFireValueChangedCallback = (serializedValue: string) => {
-			const deserializedValue = this.httpService.JSONDecode(serializedValue);
+			const deserializedValue = serializedValue === "" ? undefined : this.httpService.JSONDecode(serializedValue);
 			assertValuePassesCheck(deserializedValue, tCheck);
 
 			valueChangedCallback(deserializedValue);
