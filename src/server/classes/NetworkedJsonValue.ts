@@ -67,8 +67,12 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 	}
 
 	public setValue(newValue: T) {
-		const serializedValue = this.httpService.JSONEncode(newValue);
-		this.networkedStringValue.setValue(serializedValue);
+		if (newValue === undefined) {
+			this.networkedStringValue.setValue("");
+		} else {
+			const serializedValue = this.httpService.JSONEncode(newValue);
+			this.networkedStringValue.setValue(serializedValue);
+		}
 	}
 
 	public updateValue(updateCallback: (oldValue: T) => T) {
