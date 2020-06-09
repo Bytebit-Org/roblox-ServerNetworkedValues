@@ -1,3 +1,6 @@
+// Basic types
+export { JsonSafe } from "./types/JsonSafe";
+
 // Client-side networked value reader
 export * from "./client/classes/ClientNetworkedValuesReader";
 
