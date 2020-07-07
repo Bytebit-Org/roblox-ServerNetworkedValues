@@ -27,7 +27,7 @@ function assertValuePassesCheck<T>(value: unknown, tCheck: check<T>): asserts va
 	assert(tCheck(value), "Cannot deserialize value - serialized value is invalid");
 }
 
-export class ClientNetworkedValuesReader {
+export class ServerNetworkedValuesReader {
 	private constructor(private readonly httpService: HttpService) {}
 
 	public static create(this: void) {
@@ -35,7 +35,7 @@ export class ClientNetworkedValuesReader {
 			throw `Cannot create unless on client`;
 		}
 
-		return new ClientNetworkedValuesReader(HttpService);
+		return new ServerNetworkedValuesReader(HttpService);
 	}
 
 	public getCurrentBooleanValue(name: string, parentInstance: Instance): boolean {
