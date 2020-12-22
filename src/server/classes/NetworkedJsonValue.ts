@@ -58,7 +58,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 
 	public getValue() {
 		const serializedValue = this.networkedStringValue.getValue();
-		const deserializedValue = this.httpService.JSONDecode(serializedValue);
+		const deserializedValue = serializedValue === "" ? undefined : this.httpService.JSONDecode(serializedValue);
 		if (!this.tCheck(deserializedValue)) {
 			throw `Cannot get value - current value is invalid`;
 		}
