@@ -1,6 +1,6 @@
 import { INetworkedValue } from "../interfaces/INetworkedValue";
 import { JsonSafe } from "../../types/JsonSafe";
-import { check } from "@rbxts/t";
+import { t } from "@rbxts/t";
 import { HttpService } from "@rbxts/services";
 import { ISignal, Signal } from "@rbxts/signals-tooling";
 import { NetworkedStringValue } from "./NetworkedStringValue";
@@ -12,7 +12,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 		createValueChangedSignal: () => ISignal<(newValue: T) => void>,
 		private readonly httpService: HttpService,
 		private readonly networkedStringValue: INetworkedValue<string>,
-		private readonly tCheck: check<T>,
+		private readonly tCheck: t.check<T>,
 	) {
 		this.valueChanged = createValueChangedSignal();
 	}
@@ -22,7 +22,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 		initialValue: T,
 		name: string,
 		parentInstance: Instance,
-		tCheck: check<T>,
+		tCheck: t.check<T>,
 	): INetworkedValue<T> {
 		const serializedInitialValue = initialValue !== undefined ? HttpService.JSONEncode(initialValue) : "";
 		const networkedStringValue = NetworkedStringValue.create(serializedInitialValue, name, parentInstance);
@@ -39,7 +39,7 @@ export class NetworkedJsonValue<T extends JsonSafe> implements INetworkedValue<T
 		name: string,
 		initialValue: T,
 		parentInstance: Instance,
-		tCheck: check<T>,
+		tCheck: t.check<T>,
 	): INetworkedValue<T> {
 		const serializedInitialValue = initialValue !== undefined ? HttpService.JSONEncode(initialValue) : "";
 		const networkedStringValue = NetworkedStringValue.getOrCreate(serializedInitialValue, name, parentInstance);
