@@ -1,7 +1,7 @@
 import { ISignalConnection } from "@rbxts/signals-tooling";
 import { RunService, HttpService } from "@rbxts/services";
 import { JsonSafe } from "../../types/JsonSafe";
-import { check } from "@rbxts/t";
+import { t } from "@rbxts/t";
 import { ValueObjectClassName } from "../../types/ValueObjectClassName";
 
 function mustGetValueObjectInstance(name: string, parentInstance: Instance) {
@@ -23,7 +23,7 @@ function assertValueObjectInstanceType<T extends ValueObjectClassName>(
 	);
 }
 
-function assertValuePassesCheck<T>(value: unknown, tCheck: check<T>): asserts value is T {
+function assertValuePassesCheck<T>(value: unknown, tCheck: t.check<T>): asserts value is T {
 	assert(tCheck(value), "Cannot deserialize value - serialized value is invalid");
 }
 
@@ -75,7 +75,7 @@ export class ServerNetworkedValuesReader {
 		return valueObjectInstance.Value;
 	}
 
-	public getCurrentJsonValue<T extends JsonSafe>(name: string, parentInstance: Instance, tCheck: check<T>): T {
+	public getCurrentJsonValue<T extends JsonSafe>(name: string, parentInstance: Instance, tCheck: t.check<T>): T {
 		const valueObjectInstance = mustGetValueObjectInstance(name, parentInstance);
 		assertValueObjectInstanceType(valueObjectInstance, "StringValue");
 
@@ -174,7 +174,7 @@ export class ServerNetworkedValuesReader {
 	public subscribeToJsonValue<T extends JsonSafe>(
 		name: string,
 		parentInstance: Instance,
-		tCheck: check<T>,
+		tCheck: t.check<T>,
 		valueChangedCallback: (newValue: T) => void,
 	): ISignalConnection {
 		const valueObjectInstance = mustGetValueObjectInstance(name, parentInstance);
