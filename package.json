@@ -4,15 +4,15 @@
   "description": "A Roblox-TS library for networking persistent values from the server to the client",
   "main": "out/init.lua",
   "scripts": {
-    "prepublishOnly": "rbxtsc"
+    "prepublishOnly": "rbxtsc --type=package"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Bytebit-Org/roblox-ServerNetworkedValues.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Bytebit",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Bytebit-Org/roblox-ServerNetworkedValues/issues"
   },
