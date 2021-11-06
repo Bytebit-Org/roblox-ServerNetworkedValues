@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/server-networked-values",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A Roblox-TS library for networking persistent values from the server to the client",
   "main": "out/init.lua",
   "scripts": {
@@ -17,10 +17,13 @@
     "url": "https://github.com/Bytebit-Org/roblox-ServerNetworkedValues/issues"
   },
   "homepage": "https://github.com/Bytebit-Org/roblox-ServerNetworkedValues#readme",
+  "types": "out/index.d.ts",
+  "files": [
+    "out"
+  ],
   "publishConfig": {
     "access": "public"
   },
-  "types": "out/index.d.ts",
   "devDependencies": {
     "@rbxts/compiler-types": "^1.2.7-types.0",
     "@rbxts/types": "^1.0.546",
