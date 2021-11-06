@@ -11,7 +11,7 @@ npm i @rbxts/server-networked-values
 ### Wally
 [Wally](https://github.com/UpliftGames/wally/) users can install this package by adding the following line to their `Wally.toml` under `[dependencies]`:
 ```
-FiniteStateMachine = "bytebit/server-networked-values@0.0.12"
+ServerNetworkedValues = "bytebit/server-networked-values@0.0.12"
 ```
 
 Then just run `wally install`.
