@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "npx eslint \"src/**/*.ts\" --max-warnings 0",
     "prepublishOnly": "rm -rf ./out; rbxtsc --type=package",
-    "test": "rbxtsc --type=game && rojo build -o ./unit_tests.rbxlx && run-in-roblox ./unit_tests.rbxlx -s ./spec.server.lua",
+    "test": "rbxtsc --type=game && rojo build -o ./unit_tests.rbxlx && run-in-roblox --place ./unit_tests.rbxlx --script ./spec.server.lua",
     "wsl-start-unit-tests": "set -e; rm -rf ./out; rbxtsc --type=game && rojo build -o unit_tests.rbxlx; ./scripts/open-in-windows ./unit_tests.rbxlx"
   },
   "repository": {
@@ -44,6 +44,7 @@
   "dependencies": {
     "@rbxts/services": "^1.1.5",
     "@rbxts/signals-tooling": "^1.0.4",
-    "@rbxts/t": "^2.1.4"
+    "@rbxts/t": "^2.1.4",
+    "@rbxts/testez": "^0.3.1-ts.7"
   }
 }
