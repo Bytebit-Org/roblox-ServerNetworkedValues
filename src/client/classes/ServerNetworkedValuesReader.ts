@@ -1,4 +1,4 @@
-import { ISignalConnection } from "@rbxts/signals-tooling";
+import { ISignal, ISignalConnection, Signal } from "@rbxts/signals-tooling";
 import { RunService, HttpService } from "@rbxts/services";
 import { JsonSafe } from "../../types/JsonSafe";
 import { t } from "@rbxts/t";
@@ -27,19 +27,23 @@ function assertValuePassesCheck<T>(value: unknown, tCheck: t.check<T>): asserts 
 	assert(tCheck(value), "Cannot deserialize value - serialized value is invalid");
 }
 
-function defaultCreateInstance<T extends keyof CreatableInstances>(className: T, parent?: Instance): CreatableInstances[T] {
-	return new Instance(className, parent);
+function defaultCreateSignal(): ISignal {
+	return new Signal();
 }
 
 export class ServerNetworkedValuesReader {
-	private constructor(private readonly createInstance: <T extends keyof CreatableInstances>(className: T, parent?: Instance) => CreatableInstances[T], private readonly httpService: HttpService, private readonly runService: RunService) {}
+	private constructor(
+		private readonly createSignal: () => ISignal,
+		private readonly httpService: HttpService,
+		private readonly runService: RunService,
+	) {}
 
 	public static create(this: void) {
 		if (!RunService.IsClient()) {
 			throw `Cannot create unless on client`;
 		}
 
-		return new ServerNetworkedValuesReader(defaultCreateInstance, HttpService, RunService);
+		return new ServerNetworkedValuesReader(defaultCreateSignal, HttpService, RunService);
 	}
 
 	public doesNetworkedValueExist(name: string, parentInstance: Instance): boolean {
@@ -171,7 +175,7 @@ export class ServerNetworkedValuesReader {
 		const valueObjectInstance = parentInstance.WaitForChild(name);
 		assertValueObjectInstanceType(valueObjectInstance, "IntValue");
 		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-		return valueObjectInstance.Changed.Connect(newValue => valueChangedCallback(newValue as T));
+		return valueObjectInstance.Changed.Connect((newValue) => valueChangedCallback(newValue as T));
 	}
 
 	public subscribeToInstanceValue(
@@ -248,16 +252,16 @@ export class ServerNetworkedValuesReader {
 			return;
 		}
 
-		const bindableEvent = this.createInstance("BindableEvent");
+		const tempSignal = this.createSignal();
 
 		const steppedConnection = this.runService.Stepped.Connect(() => {
 			if (this.doesNetworkedValueExist(name, parentInstance)) {
 				steppedConnection.Disconnect();
-				bindableEvent.Fire();
+				tempSignal.fire();
 			}
-		})
+		});
 
-		bindableEvent.Event.Wait();
-		bindableEvent.Destroy();
+		tempSignal.Wait();
+		tempSignal.destroy();
 	}
 }

@@ -36,6 +36,6 @@ export function getOrCreateValueObjectInstance<T extends ValueObjectClassName>(
 		newChild.Parent = parentInstance;
 
 		// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-		return (newChild as unknown) as ValueObjectInstance<ValueObjectClassNameToValueType<T>>;
+		return newChild as unknown as ValueObjectInstance<ValueObjectClassNameToValueType<T>>;
 	}
 }
