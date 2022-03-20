@@ -27,15 +27,28 @@ function assertValuePassesCheck<T>(value: unknown, tCheck: t.check<T>): asserts 
 	assert(tCheck(value), "Cannot deserialize value - serialized value is invalid");
 }
 
+function defaultCreateInstance<T extends keyof CreatableInstances>(className: T, parent?: Instance): CreatableInstances[T] {
+	return new Instance(className, parent);
+}
+
 export class ServerNetworkedValuesReader {
-	private constructor(private readonly httpService: HttpService) {}
+	private constructor(private readonly createInstance: <T extends keyof CreatableInstances>(className: T, parent?: Instance) => CreatableInstances[T], private readonly httpService: HttpService, private readonly runService: RunService) {}
 
 	public static create(this: void) {
 		if (!RunService.IsClient()) {
 			throw `Cannot create unless on client`;
 		}
 
-		return new ServerNetworkedValuesReader(HttpService);
+		return new ServerNetworkedValuesReader(defaultCreateInstance, HttpService, RunService);
+	}
+
+	public doesNetworkedValueExist(name: string, parentInstance: Instance): boolean {
+		try {
+			const valueObject = mustGetValueObjectInstance(name, parentInstance);
+			return valueObject.IsA("ValueBase");
+		} catch {
+			return false;
+		}
 	}
 
 	public getCurrentBooleanValue(name: string, parentInstance: Instance): boolean {
@@ -228,5 +241,23 @@ export class ServerNetworkedValuesReader {
 		const valueObjectInstance = parentInstance.WaitForChild(name);
 		assertValueObjectInstanceType(valueObjectInstance, "Vector3Value");
 		return valueObjectInstance.Changed.Connect(valueChangedCallback);
+	}
+
+	public waitForNetworkedValueToExist(name: string, parentInstance: Instance) {
+		if (this.doesNetworkedValueExist(name, parentInstance)) {
+			return;
+		}
+
+		const bindableEvent = this.createInstance("BindableEvent");
+
+		const steppedConnection = this.runService.Stepped.Connect(() => {
+			if (this.doesNetworkedValueExist(name, parentInstance)) {
+				steppedConnection.Disconnect();
+				bindableEvent.Fire();
+			}
+		})
+
+		bindableEvent.Event.Wait();
+		bindableEvent.Destroy();
 	}
 }
